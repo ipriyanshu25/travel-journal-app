@@ -1,0 +1,131 @@
+<%- include('../partials/header') %>
+
+<div class="container mt-4">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header bg-primary text-white">
+          <h2 class="mb-0">Create New Travel Journal</h2>
+        </div>
+        <div class="card-body">
+          <% if(typeof errors !== 'undefined' && errors.length > 0) { %>
+            <div class="alert alert-danger">
+              <ul class="mb-0">
+                <% errors.forEach(error => { %>
+                  <li><%= error %></li>
+                <% }) %>
+              </ul>
+            </div>
+          <% } %>
+          
+          <form action="/journal" method="POST" class="needs-validation" novalidate>
+            <div class="mb-3">
+              <label for="destination" class="form-label">Destination</label>
+              <input 
+                type="text" 
+                class="form-control" 
+                id="destination" 
+                name="destination" 
+                value="<%= typeof formData !== 'undefined' ? formData.destination : '' %>"
+                required
+              >
+              <div class="invalid-feedback">
+                Please provide a destination.
+              </div>
+              <small class="form-text text-muted">
+                Note: Destination cannot be changed once the journal is created.
+              </small>
+            </div>
+            
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="arrivalDate" class="form-label">Arrival Date</label>
+                <input 
+                  type="date" 
+                  class="form-control" 
+                  id="arrivalDate" 
+                  name="arrivalDate" 
+                  value="<%= typeof formData !== 'undefined' ? formData.arrivalDate : '' %>"
+                  required
+                >
+                <div class="invalid-feedback">
+                  Please provide an arrival date.
+                </div>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="departureDate" class="form-label">Departure Date</label>
+                <input 
+                  type="date" 
+                  class="form-control" 
+                  id="departureDate" 
+                  name="departureDate" 
+                  value="<%= typeof formData !== 'undefined' ? formData.departureDate : '' %>"
+                  required
+                >
+                <div class="invalid-feedback">
+                  Please provide a departure date.
+                </div>
+              </div>
+            </div>
+            
+            <div class="mb-3">
+              <label for="experience" class="form-label">Experience</label>
+              <textarea 
+                class="form-control" 
+                id="experience" 
+                name="experience" 
+                rows="5" 
+                required
+                minlength="10"
+              ><%= typeof formData !== 'undefined' ? formData.experience : '' %></textarea>
+              <div class="invalid-feedback">
+                Please share your experience (at least 10 characters).
+              </div>
+            </div>
+            
+            <div class="mb-3">
+              <label for="rating" class="form-label">Rating (1-5)</label>
+              <input 
+                type="range" 
+                class="form-range" 
+                min="1" 
+                max="5" 
+                id="rating" 
+                name="rating" 
+                value="<%= typeof formData !== 'undefined' ? formData.rating : '3' %>"
+                required
+              >
+              <div class="d-flex justify-content-between">
+                <span>1</span>
+                <span>2</span>
+                <span>3</span>
+                <span>4</span>
+                <span>5</span>
+              </div>
+              <div class="text-center mt-2">
+                Current value: <span id="ratingValue"><%= typeof formData !== 'undefined' ? formData.rating : '3' %></span>
+              </div>
+            </div>
+            
+            <div class="d-grid gap-2">
+              <button type="submit" class="btn btn-primary">Create Journal</button>
+              <a href="/journals" class="btn btn-secondary">Cancel</a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Update rating value display
+  const ratingInput = document.getElementById('rating');
+  const ratingValue = document.getElementById('ratingValue');
+  
+  ratingInput.addEventListener('input', function() {
+    ratingValue.textContent = this.value;
+  });
+</script>
+
+<%- include('../partials/footer') %>
