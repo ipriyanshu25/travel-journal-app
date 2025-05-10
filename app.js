@@ -5,7 +5,8 @@ const path = require('path');
 const methodOverride = require('method-override');
 const session = require('express-session');
 const flash = require('connect-flash');
-
+const expressLayouts = require('express-ejs-layouts');
+ 
 // Helper to support both `module.exports = router` and `module.exports = { router }`
 function loadRouter(routerPath) {
   const mod = require(routerPath);
@@ -19,7 +20,8 @@ const { configurePassport } = require('./middleware/auth');
 
 // Initialize app
 const app = express();
-
+app.use(expressLayouts);
+app.set('layout', 'layout'); 
 // Connect to MongoDB
 mongoose.connect('mongodb://localhost:27017/travel-journal', {
   useNewUrlParser: true,
@@ -70,6 +72,8 @@ app.use((err, req, res, next) => {
   console.error(err);
   res.status(500).render('error', { error: err });
 });
+
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Start server
 const PORT = process.env.PORT || 3000;
